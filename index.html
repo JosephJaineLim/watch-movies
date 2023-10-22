@@ -154,25 +154,26 @@
         document.getElementById('search-button').addEventListener('click',async()=>{
             const movie = document.getElementById('search-input').value;
 
-            const url = `https://imdb-search2.p.rapidapi.com/${movie}`;
+            const url = `https://imdb188.p.rapidapi.com/api/v1/searchIMDB?query=${movie}`;
             const options = {
                 method: 'GET',
                 headers: {
                     'X-RapidAPI-Key': '852b21120fmsh11bb9e83ff228ddp1c7fd0jsnef156c218fa7',
-                    'X-RapidAPI-Host': 'imdb-search2.p.rapidapi.com'
+                    'X-RapidAPI-Host': 'imdb188.p.rapidapi.com'
                 }
             };
 
             try {
                 const response = await fetch(url, options);
                 const result = await response.json();
-                console.log(result.description);
+
+                console.log(result);
                 ClearResults();
-                result.description.forEach((e,i) => {
+                result.data.forEach((e,i) => {
 
                     document.getElementById('results').innerHTML += `
-                    <div class="app__results_thumbnail" onclick="PlayVideo('${e['#IMDB_ID']}')">
-                        <img src="${e['#IMG_POSTER']}" alt="${e['#TITLE']}">
+                    <div class="app__results_thumbnail" onclick="PlayVideo('${e['id']}')">
+                        <img src="${e['image']}" alt="${e['title']}">
                     </div>
                     `
                 })
