@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joseph Lim</title>
+    <style>
+        body{
+           margin: 0;
+           padding: 0; 
+        }
+        h1{
+            padding: 0;
+            margin: 0;
+        }
+        p{
+            padding: 0;
+            margin: 0;
+        }
+
+        #root
+        {
+            width: 100svw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;    
+        }
+
+        .app__search{
+            width: 100%;
+            height: max-content;
+            padding: 20px 0;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app__search #search-input{
+            width: 70%;
+            height: 75px;
+
+            font-size: 4rem;
+        }
+
+        .app__search #search-button{
+            width: 20%;
+            text-align: center;
+            height: 78.5px;
+            border: solid black 1px;
+            border-left: none;
+
+            font-size: 4rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .app__results{
+            width: 90%;
+            padding: 20px 0;
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            grid-template-columns: repeat(4,4fr);
+            gap: 1rem;
+
+            cursor: pointer;
+
+            
+        }
+        .app__results_thumbnail{
+            width: 100%;
+            height: 400px;
+            border: solid 1px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .app__results_thumbnail img{
+            width: 100%;
+            height: 100%;
+        }
+
+        #line{
+
+            width: 70%;
+            height: .5px;
+
+            background-color: black;
+        }
+
+        @media only screen and (max-width: 1000px) {
+            .app__results{
+                grid-template-columns: repeat(2,2fr);
+            }
+
+            .app__search #search-input{
+                font-size: 2rem;
+                height: 50px;
+            }
+
+            .app__search #search-button{
+                font-size: 2rem;
+                height: 53.5px;
+
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            .app__results{
+            grid-template-columns: repeat(1,1fr);
+            }
+
+            .app__search #search-input{
+                font-size: 1rem;
+                height: 30px;
+            }
+
+            .app__search #search-button{
+                font-size: 1rem;
+                height: 33px;
+            }
+        }
+        .app__movie{
+            width: 90%; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="app__search">    
+            <input type="text" placeholder="Search Movie" id="search-input">
+            <div id="search-button">submit</div>
+        </div>
+        <div id="line"></div>
+        <div class="app__results" id="results">
+        </div>
+        <div class="app__movie" id="movie">
+        </div>
+    </div>
+
+
+    <script>
+        document.getElementById('search-button').addEventListener('mousedown',async()=>{
+            const movie = document.getElementById('search-input').value;
+
+            const url = `https://imdb-search2.p.rapidapi.com/${movie}`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': '852b21120fmsh11bb9e83ff228ddp1c7fd0jsnef156c218fa7',
+                    'X-RapidAPI-Host': 'imdb-search2.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(url, options);
+                const result = await response.json();
+                console.log(result.description);
+                ClearResults();
+                result.description.forEach((e,i) => {
+
+                    document.getElementById('results').innerHTML += `
+                    <div class="app__results_thumbnail" onclick="PlayVideo('${e['#IMDB_ID']}')">
+                        <img src="${e['#IMG_POSTER']}" alt="${e['#TITLE']}">
+                    </div>
+                    `
+                })
+            }catch (error) {
+                console.log('error: try again')
+            }
+        })
+
+        const PlayVideo = (param) => {
+            ClearResults();
+            document.getElementById('movie').innerHTML = `
+            <iframe id="iframe-embed" width="100%" height="500px" scrolling="no" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="https://vidsrc.to/embed/movie/${param}"></iframe>
+            `;
+        }
+
+        const ClearResults = () =>{
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('movie').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
