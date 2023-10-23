@@ -151,29 +151,46 @@
 
 
     <script>
-        document.getElementById('search-button').addEventListener('click',async()=>{
-            const movie = document.getElementById('search-input').value;
 
-            const url = `https://imdb188.p.rapidapi.com/api/v1/searchIMDB?query=${movie}`;
+        window.addEventListener('load', ()=>{
             const options = {
-                method: 'GET',
-                headers: {
-                    'X-RapidAPI-Key': '852b21120fmsh11bb9e83ff228ddp1c7fd0jsnef156c218fa7',
-                    'X-RapidAPI-Host': 'imdb188.p.rapidapi.com'
-                }
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjExZDQ1ZTU1ZTUyYzBmNThhYTQ0ZWI5Y2NkYzM1NSIsInN1YiI6IjY1MzU2ZjZmYWJkYWZjMDE0ZTdkZDMyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vqNBGRsK56vOLa80R3TsPDurlxGwDRe6Y-rD7uVfBpQ'
+            }
             };
 
+            fetch('https://api.themoviedb.org/3/discover/movie?page=1&sort_by=popularity.desc', options)
+            .then(response => response.json())
+            .then(response => {
+                response.results.forEach((e,i) => {
+                document.getElementById('results').innerHTML += `
+                <div class="app__results_thumbnail" onclick="PlayVideo('${e['id']}')">
+                    <img src="https://image.tmdb.org/t/p/original/${e['poster_path']}" alt="${e['title']}">
+                </div>
+                `
+                })
+            })
+            .catch(err => console.error(err));
+        })
+
+        document.getElementById('search-button').addEventListener('click',async()=>{
+            const movie = document.getElementById('search-input').value;
+            const api_key = 'eb11d45e55e52c0f58aa44eb9ccdc355';
+            const url = `https://api.themoviedb.org/3/search/movie?query=${movie}&api_key=${api_key}`;
+
             try {
-                const response = await fetch(url, options);
+                const response = await fetch(url);
                 const result = await response.json();
 
-                console.log(result);
+                console.log(result.results);
                 ClearResults();
-                result.data.forEach((e,i) => {
+                result.results.forEach((e,i) => {
 
                     document.getElementById('results').innerHTML += `
                     <div class="app__results_thumbnail" onclick="PlayVideo('${e['id']}')">
-                        <img src="${e['image']}" alt="${e['title']}">
+                        <img src="https://image.tmdb.org/t/p/original/${e['poster_path']}" alt="${e['title']}">
                     </div>
                     `
                 })
