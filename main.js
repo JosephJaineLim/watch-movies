@@ -29,7 +29,7 @@ document.getElementById('search-button').addEventListener('click',async()=>{
     try {
         const response = await fetch(url);
         const result = await response.json();
-
+        console.log(result.results)
         ClearResults();
         if(result.results.length === 0)
         {
