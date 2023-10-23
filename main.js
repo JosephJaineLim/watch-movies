@@ -1,4 +1,3 @@
-
 window.addEventListener('load', ()=>{
     const options = {
     method: 'GET',
@@ -20,10 +19,6 @@ window.addEventListener('load', ()=>{
         })
     })
     .catch(err => console.error(err));
-
-    document.getElementById('movie').innerHTML = `
-    <iframe id="iframe-embed" width="0" height="0" scrolling="no" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="https://vidsrc.to/embed/movie/tt0068646"></iframe>
-    `;
 })
 
 document.getElementById('search-button').addEventListener('click',async()=>{
