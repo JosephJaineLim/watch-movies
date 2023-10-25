@@ -31,15 +31,20 @@ body{
      justify-content: center;
  }
 
+ form img{
+    width: 2.5rem;
+ }
+
+
  .app__search #search-input{
-     width: 70%;
+     width: 80%;
      height: 75px;
 
      font-size: 4rem;
  }
 
  .app__search #search-button{
-     width: 20%;
+     width: 10%;
      text-align: center;
      height: 78.5px;
      border: solid black 1px;
@@ -112,6 +117,11 @@ body{
          height: 53.5px;
 
      }
+
+     form img{
+        width: 1.5rem;
+     }
+    
  }
  @media only screen and (max-width: 600px) {
      .app__results{
@@ -127,6 +137,10 @@ body{
          font-size: 1rem;
          height: 33px;
      }
+     form img{
+        width: 1rem;
+     }
+    
  }
  .app__movie{
      width: 90%; 

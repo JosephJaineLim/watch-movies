@@ -1,13 +1,75 @@
+let counter = 1;
+let pageSelected = 'Home'
 window.addEventListener('load', ()=>{
-    const options = {
-    method: 'GET',
-    headers: {
-        accept: 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjExZDQ1ZTU1ZTUyYzBmNThhYTQ0ZWI5Y2NkYzM1NSIsInN1YiI6IjY1MzU2ZjZmYWJkYWZjMDE0ZTdkZDMyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vqNBGRsK56vOLa80R3TsPDurlxGwDRe6Y-rD7uVfBpQ'
-    }
-    };
+    Home()
+})
 
-    fetch('https://api.themoviedb.org/3/discover/movie?page=1&sort_by=popularity.desc', options)
+window.addEventListener('scrollend', () => {
+    console.log(document.body.scrollHeight)
+
+    if(Math.round(window.innerHeight+window.scrollY) >= document.body.scrollHeight/1.5 && pageSelected === 'Home'){
+        counter++;
+        Home()
+    }
+})
+
+document.getElementById('app__search').addEventListener('submit',(e)=>{
+    pageSelected = 'Search';
+    e.preventDefault();
+    
+    const options = {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjExZDQ1ZTU1ZTUyYzBmNThhYTQ0ZWI5Y2NkYzM1NSIsInN1YiI6IjY1MzU2ZjZmYWJkYWZjMDE0ZTdkZDMyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vqNBGRsK56vOLa80R3TsPDurlxGwDRe6Y-rD7uVfBpQ'
+        }
+    };
+    
+    const movie = document.getElementById('search-input').value;
+    fetch(`https://api.themoviedb.org/3/search/movie?query=${movie}`,options)
+    .then(response => response.json())
+    .then(response => {
+        ClearResults();
+        if(response.results.length === 0)
+        {
+            document.getElementById('movie').innerHTML = `<h1>No Results Found.</h1>`
+            return
+        }
+        response.results.forEach((e,i) => {
+            document.getElementById('results').innerHTML += `
+            <div class="app__results_thumbnail" onclick="PlayVideo('${e['id']}')">
+                <img src="https://image.tmdb.org/t/p/original/${e['poster_path']}" alt="${e['title']}">
+            </div>
+            `
+        })
+    })
+    .catch(err => document.getElementById('movie').innerHTML = `<h1>Error: Try Again</h1>`);
+})
+
+const PlayVideo = (param) => {
+    pageSelected = 'Movie'
+    ClearResults();
+    document.getElementById('movie').innerHTML = `
+        <iframe id="iframe-embed" width="100%" height="500px" scrolling="no" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="https://vidsrc.to/embed/movie/${param}"></iframe>
+    `;
+}
+
+const ClearResults = () =>{
+    document.getElementById('results').innerHTML = '';
+    document.getElementById('movie').innerHTML = '';
+}
+
+const Home = () => {
+    pageSelected = 'Home'
+    const options = {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjExZDQ1ZTU1ZTUyYzBmNThhYTQ0ZWI5Y2NkYzM1NSIsInN1YiI6IjY1MzU2ZjZmYWJkYWZjMDE0ZTdkZDMyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vqNBGRsK56vOLa80R3TsPDurlxGwDRe6Y-rD7uVfBpQ'
+        }
+    };
+    
+    fetch(`https://api.themoviedb.org/3/discover/movie?page=${counter}&sort_by=popularity.desc`, options)
     .then(response => response.json())
     .then(response => {
         response.results.forEach((e,i) => {
@@ -18,45 +80,5 @@ window.addEventListener('load', ()=>{
         `
         })
     })
-    .catch(err => console.error(err));
-})
-
-document.getElementById('search-button').addEventListener('click',async()=>{
-    const movie = document.getElementById('search-input').value;
-    const api_key = 'eb11d45e55e52c0f58aa44eb9ccdc355';
-    const url = `https://api.themoviedb.org/3/search/movie?query=${movie}&api_key=${api_key}`;
-
-    try {
-        const response = await fetch(url);
-        const result = await response.json();
-        console.log(result.results)
-        ClearResults();
-        if(result.results.length === 0)
-        {
-            document.getElementById('movie').innerHTML += `<h1>No results found.</h1>`
-            return;
-        }
-        result.results.forEach((e,i) => {
-
-            document.getElementById('results').innerHTML += `
-            <div class="app__results_thumbnail" onclick="PlayVideo('${e['id']}')">
-                <img src="https://image.tmdb.org/t/p/original/${e['poster_path']}" alt="${e['title']}">
-            </div>
-            `
-        })
-    }catch (error) {
-        console.log('error: try again')
-    }
-})
-
-const PlayVideo = (param) => {
-    ClearResults();
-    document.getElementById('movie').innerHTML = `
-    <iframe id="iframe-embed" width="100%" height="500px" scrolling="no" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="https://vidsrc.to/embed/movie/${param}"></iframe>
-    `;
-}
-
-const ClearResults = () =>{
-    document.getElementById('results').innerHTML = '';
-    document.getElementById('movie').innerHTML = '';
+    .catch(err => document.getElementById('movie').innerHTML = `<h1>Error: Try Again</h1>`);
 }
