@@ -32,30 +32,25 @@ body{
  }
 
  form img{
-    width: 2.5rem;
+    height: 2rem;
  }
 
-
  .app__search #search-input{
-     width: 80%;
-     height: 75px;
-
-     font-size: 4rem;
+    
+    width: 80%; 
+    font-size: 4rem;
+    height: 70px;
  }
 
  .app__search #search-button{
-     width: 10%;
-     text-align: center;
-     height: 78.5px;
-     border: solid black 1px;
-     border-left: none;
-
-     font-size: 4rem;
-
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     cursor: pointer;
+    width: 10%;
+    height: 73.5px;
+    border: solid 1px;
+    border-left: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
  }
 
  .app__results{
