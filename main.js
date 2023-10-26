@@ -7,7 +7,7 @@ window.addEventListener('load', ()=>{
 window.addEventListener('scrollend', () => {
     console.log(document.body.scrollHeight)
 
-    if(Math.round(window.innerHeight+window.scrollY) >= document.body.scrollHeight/1.5 && pageSelected === 'Home'){
+    if(Math.round(window.innerHeight+window.scrollY) >= document.body.scrollHeight - 1000 && pageSelected === 'Home'){
         counter++;
         Home()
     }
