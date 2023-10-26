@@ -17,14 +17,6 @@ document.getElementById('app__search').addEventListener('submit',(e)=>{
     pageSelected = 'Search';
     e.preventDefault();
     
-    const options = {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjExZDQ1ZTU1ZTUyYzBmNThhYTQ0ZWI5Y2NkYzM1NSIsInN1YiI6IjY1MzU2ZjZmYWJkYWZjMDE0ZTdkZDMyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vqNBGRsK56vOLa80R3TsPDurlxGwDRe6Y-rD7uVfBpQ'
-        }
-    };
-    
     const movie = document.getElementById('search-input').value;
     fetch(`https://api.themoviedb.org/3/search/movie?query=${movie}`,options)
     .then(response => response.json())
@@ -61,13 +53,6 @@ const ClearResults = () =>{
 
 const Home = () => {
     pageSelected = 'Home'
-    const options = {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjExZDQ1ZTU1ZTUyYzBmNThhYTQ0ZWI5Y2NkYzM1NSIsInN1YiI6IjY1MzU2ZjZmYWJkYWZjMDE0ZTdkZDMyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vqNBGRsK56vOLa80R3TsPDurlxGwDRe6Y-rD7uVfBpQ'
-        }
-    };
     
     fetch(`https://api.themoviedb.org/3/discover/movie?page=${counter}&sort_by=popularity.desc`, options)
     .then(response => response.json())
@@ -82,3 +67,11 @@ const Home = () => {
     })
     .catch(err => document.getElementById('movie').innerHTML = `<h1>Error: Try Again</h1>`);
 }
+
+const options = {
+    method: 'GET',
+    headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjExZDQ1ZTU1ZTUyYzBmNThhYTQ0ZWI5Y2NkYzM1NSIsInN1YiI6IjY1MzU2ZjZmYWJkYWZjMDE0ZTdkZDMyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vqNBGRsK56vOLa80R3TsPDurlxGwDRe6Y-rD7uVfBpQ'
+    }
+};
