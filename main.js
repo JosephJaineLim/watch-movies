@@ -1,12 +1,10 @@
-let counter = 1;
-let pageSelected = 'Home'
 window.addEventListener('load', ()=>{
     Home()
 })
 
+let counter = 1;
+let pageSelected = 'Home'
 window.addEventListener('scrollend', () => {
-    console.log(document.body.scrollHeight)
-
     if(Math.round(window.innerHeight+window.scrollY) >= document.body.scrollHeight - 1000 && pageSelected === 'Home'){
         counter++;
         Home()
@@ -27,13 +25,23 @@ document.getElementById('app__search').addEventListener('submit',(e)=>{
             document.getElementById('movie').innerHTML = `<h1>No Results Found.</h1>`
             return
         }
-        response.results.forEach((e,i) => {
-            document.getElementById('results').innerHTML += `
-            <div class="app__results_thumbnail" onclick="PlayVideo('${e['id']}')">
-                <img src="https://image.tmdb.org/t/p/original/${e['poster_path']}" alt="${e['title']}">
-                <p>${e['title']}(${e['year']})</p>
-            </div>
-            `
+        const resultsElement = document.getElementById('results');
+        response.results.forEach(e => {
+            const resultsThumbnail = document.createElement('div');
+            resultsThumbnail.className = 'app__results_thumbnail'
+            resultsThumbnail.onclick = () => PlayVideo(`${e['id']}`)
+
+            const image = document.createElement('img')
+            image.src =`https://image.tmdb.org/t/p/original/${e['poster_path']}`
+            image.alt = `${e['title']}`
+
+            const para = document.createElement('p')
+
+            para.innerText = `${e['title']} (${e['release_date'].split('-')[0]})`
+
+            resultsThumbnail.appendChild(image)
+            resultsThumbnail.appendChild(para)
+            resultsElement.appendChild(resultsThumbnail)
         })
     })
     .catch(err => document.getElementById('movie').innerHTML = `<h1>Error: Try Again</h1>`);
@@ -58,19 +66,28 @@ const Home = () => {
     fetch(`https://api.themoviedb.org/3/discover/movie?page=${counter}&sort_by=popularity.desc`, options)
     .then(response => response.json())
     .then(response => {
-        console.log(response.results)
+        const resultsElement = document.getElementById('results');
         response.results.forEach((e,i) => {
-        document.getElementById('results').innerHTML += `
-        <div class="app__results_thumbnail" onclick="PlayVideo('${e['id']}')">
-            <img src="https://image.tmdb.org/t/p/original/${e['poster_path']}" alt="${e['title']}">
-            <p>${e['title']} (${e['release_date'].split('-')[0]})</p>
-        </div>
-        `
+            const resultsThumbnail = document.createElement('div')
+            resultsThumbnail.className = 'app__results_thumbnail';
+            resultsThumbnail.onclick = () => PlayVideo(`${e['id']}`)
+
+            const image = document.createElement('img')
+            image.src = `https://image.tmdb.org/t/p/original/${e['poster_path']}`
+            image.alt = `${e['title']}`
+
+            const para = document.createElement('p')
+
+            para.innerText = `${e['title']} (${e['release_date'].split('-')[0]})`
+
+            resultsThumbnail.appendChild(image)
+            resultsThumbnail.appendChild(para)
+            resultsElement.appendChild(resultsThumbnail)
         })
     })
     .catch(err => document.getElementById('movie').innerHTML = `<h1>Error: Try Again</h1>`);
 }
-
+ 
 const options = {
     method: 'GET',
     headers: {
