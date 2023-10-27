@@ -21,6 +21,10 @@ body{
  }
 
  .app__search{
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    background-color: white;
      width: 100%;
      height: max-content;
      padding: 20px 0;
@@ -55,7 +59,7 @@ body{
 
  .app__results{
     width: 90%;
-    padding: 20px 0;
+    padding: 120px 0;
     display: grid;
     align-items: stretch;
     justify-items: center;
@@ -96,14 +100,6 @@ body{
     padding: 5px 0;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
- }
-
- #line{
-
-     width: 70%;
-     height: .5px;
-
-     background-color: black;
  }
 
  .app__notice{
