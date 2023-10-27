@@ -31,6 +31,7 @@ document.getElementById('app__search').addEventListener('submit',(e)=>{
             document.getElementById('results').innerHTML += `
             <div class="app__results_thumbnail" onclick="PlayVideo('${e['id']}')">
                 <img src="https://image.tmdb.org/t/p/original/${e['poster_path']}" alt="${e['title']}">
+                <p>${e['title']}(${e['year']})</p>
             </div>
             `
         })
@@ -57,10 +58,12 @@ const Home = () => {
     fetch(`https://api.themoviedb.org/3/discover/movie?page=${counter}&sort_by=popularity.desc`, options)
     .then(response => response.json())
     .then(response => {
+        console.log(response.results)
         response.results.forEach((e,i) => {
         document.getElementById('results').innerHTML += `
         <div class="app__results_thumbnail" onclick="PlayVideo('${e['id']}')">
             <img src="https://image.tmdb.org/t/p/original/${e['poster_path']}" alt="${e['title']}">
+            <p>${e['title']} (${e['release_date'].split('-')[0]})</p>
         </div>
         `
         })
