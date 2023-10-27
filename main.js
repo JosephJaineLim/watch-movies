@@ -58,6 +58,7 @@ const PlayVideo = (param) => {
 const ClearResults = () =>{
     document.getElementById('results').innerHTML = '';
     document.getElementById('movie').innerHTML = '';
+    document.getElementById('notice').innerHTML = '';
 }
 
 const Home = () => {
@@ -86,6 +87,8 @@ const Home = () => {
         })
     })
     .catch(err => document.getElementById('movie').innerHTML = `<h1>Error: Try Again</h1>`);
+
+    document.getElementById('notice').innerHTML = '<p>⬇️ Scroll down to load more movies. ⬇️</p>'
 }
  
 const options = {
